@@ -1,19 +1,19 @@
 import graphene
 from graphene_django import DjangoObjectType
-from .models import Product
+from .models import Vehicle
 
-class ProductType(DjangoObjectType):
+class VehicleType(DjangoObjectType):
     class Meta:
-        model = Product
-        fields = ("id","name", "price", "expire_date", "created_date")
+        model = Vehicle
+        fields = ("id","name", "price", "launch_date")
 
 
 class Query(graphene.ObjectType):
 
-    all_products = graphene.List(ProductType) 
+    all_vehicles = graphene.List(VehicleType) 
 
-    def resolve_all_products(root, info):
-        return Product.objects.all()
+    def resolve_all_vehicles(root, info):
+        return Vehicle.objects.all()
 
 
 schema = graphene.Schema(query=Query)    
