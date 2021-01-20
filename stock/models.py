@@ -7,6 +7,9 @@ class Product(models.Model):
     expire_date = models.DateField()
     created_date = models.DateField()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         
         db_table='product'
