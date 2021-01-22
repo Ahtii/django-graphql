@@ -10,6 +10,7 @@ class Vendor(models.Model):
     class Meta:
 
         db_table = 'vendor'    
+        
 
 class Vehicle(models.Model):
 
