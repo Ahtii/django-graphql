@@ -1,6 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from .models import Vehicle, Vendor, Category
+from django.db.models import Q
 
 # Map Vendor django model to graphql Vendor type
 class VendorType(DjangoObjectType):
@@ -20,7 +21,11 @@ class Query(graphene.ObjectType):
     vehicles = graphene.List(VehicleType)
     vendors = graphene.List(VendorType)
     vendor_by_name = graphene.Field(VendorType, name=graphene.String(required=True))
-    vehicle_by_category = graphene.List(VehicleType, category=graphene.String(required=True))
+    vehicle_by_category = graphene.List(VehicleType, category=graphene.String(required=True))        
+    vehicle_by = graphene.List(VehicleType, 
+                    name=graphene.String(required=True), 
+                    category=graphene.String(required=True)
+                )
 
     # Get all vehicles present in the stock
     def resolve_vehicles(root, info):
@@ -43,5 +48,12 @@ class Query(graphene.ObjectType):
             return Vehicle.objects.filter(category__vehicle_type=category)
         except Vehicle.DoesNotExist:
             return None        
+
+    # Get vehicle by vendor name and category
+    def resolve_vehicle_by(root, info, name, category):
+        try:
+            return Vehicle.objects.filter(Q(category__vehicle_type=category) & Q(vendor__name=name))
+        except Vehicle.DoesNotExist:
+            return None            
 
 schema = graphene.Schema(query=Query)    
