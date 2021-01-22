@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Vehicle, Vendor
+from .models import *
 
 admin.site.register(Vehicle)
 admin.site.register(Vendor)
+admin.site.register(Category)
