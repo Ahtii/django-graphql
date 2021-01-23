@@ -13,18 +13,11 @@ class Vendor(models.Model):
 
         
 class Category(models.Model):
-
-    VEHICLE_TYPE = (
-        ('Sedan', 'Sedan'),
-        ('Coupe', 'Coupe'),
-        ('Hatchback', 'Hatchback'),
-        ('SUV', 'SUV'),
-        ('Minivan', 'Minivan')
-    )  
-    vehicle_type = models.CharField(max_length=20, choices=VEHICLE_TYPE)    
+      
+    name = models.CharField(max_length=20, unique=True)    
 
     def __str__(self):
-        return self.vehicle_type
+        return self.name
 
     class Meta:
 

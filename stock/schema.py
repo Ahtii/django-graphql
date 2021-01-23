@@ -15,6 +15,12 @@ class VehicleType(DjangoObjectType):
         model = Vehicle
         fields = ("id","name", "price", "launch_date", "vendor", "category")
 
+# Map Category django model to graphql Category type
+class CategoryType(DjangoObjectType):
+    class Meta:
+        model = Category
+        fields = ("id", "name")        
+
 # Define the root node structure as Query
 class Query(graphene.ObjectType):
 
@@ -54,6 +60,72 @@ class Query(graphene.ObjectType):
         try:
             return Vehicle.objects.filter(Q(category__vehicle_type=category) & Q(vendor__name=name))
         except Vehicle.DoesNotExist:
-            return None            
+            return None        
 
-schema = graphene.Schema(query=Query)    
+class AddVendor(graphene.Mutation):
+
+    class Arguments:
+        name = graphene.String(required=True) 
+
+    vendor = graphene.Field(VendorType) 
+
+    @classmethod
+    def mutate(cls, root, info, name):
+        vendor = Vendor(name=name)
+        vendor.save()
+        return AddVendor(vendor=vendor) 
+
+class AddCategory(graphene.Mutation):
+
+    class Arguments:
+        name = graphene.String(required=True)
+
+    category = graphene.Field(CategoryType)    
+
+    @classmethod
+    def mutate(cls, root, info, name):
+        category = Category(name=name)
+        category.save()
+        return AddCategory(category=category)
+
+
+def get_vendor(vendor_id):
+    return Vendor.objects.get(id=vendor_id)
+
+def get_category(category_id):
+    return Category.objects.get(id=category_id)    
+
+class AddVehicle(graphene.Mutation):
+
+    class Arguments:
+        name = graphene.String(required=True)
+        price = graphene.Decimal(required=True)
+        launch_date = graphene.Date(required=True)
+        vendor = graphene.ID(required=True)
+        category = graphene.ID(required=True)
+
+    vehicle = graphene.Field(VehicleType) 
+
+    @classmethod
+    def mutate(cls, root, info, name, price, launch_date, vendor, category):
+
+        vehicle = Vehicle(
+                name=name,
+                price=price,
+                launch_date=launch_date,
+                vendor=get_vendor(vendor),
+                category=get_category(category)
+            )
+        vehicle.save()
+        return AddVehicle(vehicle=vehicle)   
+
+# Define the root node as Mutation
+class Mutation(graphene.ObjectType):
+
+    add_vendor = AddVendor.Field()
+
+    add_category = AddCategory.Field()
+
+    add_vehicle = AddVehicle.Field()
+
+schema = graphene.Schema(query=Query, mutation=Mutation)  
