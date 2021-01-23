@@ -11,7 +11,7 @@ class VendorType(DjangoObjectType):
 class VehicleType(DjangoObjectType):
     class Meta:
         model = Vehicle
-        fields = ("id","name", "price", "launch_date", "vendor", "category")
+        fields = ("id", "name", "price", "launch_date", "vendor", "category")
 
 class CategoryType(DjangoObjectType):
     class Meta:

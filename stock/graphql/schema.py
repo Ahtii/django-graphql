@@ -1,5 +1,6 @@
 import graphene
-from . import types, mutation
+from stock.graphql.types import *
+from stock.graphql.mutation import *
 from django.db.models import Q 
 
 '''
@@ -45,7 +46,15 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
 
     add_vendor = AddVendor.Field()
+    edit_vendor = EditVendor.Field()
+    remove_vendor = RemoveVendor.Field()
+
     add_category = AddCategory.Field()
+    edit_category = EditCategory.Field()
+    remove_category = RemoveCategory.Field()
+
     add_vehicle = AddVehicle.Field()
+    edit_vehicle = EditVehicle.Field()
+    remove_vehicle = RemoveVehicle.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)  
