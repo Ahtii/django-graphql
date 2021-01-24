@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'graphene_subscriptions',
+    'channels',
     'stock'    
 ]
 
@@ -82,7 +84,6 @@ CHANNEL_LAYERS = {
 
 WSGI_APPLICATION = 'django_graphql.wsgi.application'
 ASGI_APPLICATION = 'django_graphql.routing.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
