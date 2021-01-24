@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'graphene_subscriptions',
+    'channels',
     'stock'    
 ]
 
@@ -70,8 +72,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_graphql.wsgi.application'
+GRAPHENE = {
+    "SCHEMA": "stock.graphql.schema.schema"
+}
 
+WSGI_APPLICATION = 'django_graphql.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
