@@ -178,3 +178,17 @@ class RemoveVehicle(graphene.Mutation):
         vehicle = Vehicle.objects.get(id=id)        
         vehicle.delete()
         return RemoveVehicle(vehicle=vehicle)                
+
+class BaseMutation(graphene.ObjectType):
+
+    add_vendor = AddVendor.Field()
+    edit_vendor = EditVendor.Field()
+    remove_vendor = RemoveVendor.Field()
+
+    add_category = AddCategory.Field()
+    edit_category = EditCategory.Field()
+    remove_category = RemoveCategory.Field()
+
+    add_vehicle = AddVehicle.Field()
+    edit_vehicle = EditVehicle.Field()
+    remove_vehicle = RemoveVehicle.Field()        
