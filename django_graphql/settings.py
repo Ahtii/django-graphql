@@ -70,7 +70,18 @@ TEMPLATES = [
     },
 ]
 
+GRAPHENE = {
+    "SCHEMA": "stock.graphql.schema.schema"
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 WSGI_APPLICATION = 'django_graphql.wsgi.application'
+ASGI_APPLICATION = 'django_graphql.routing.application'
 
 
 # Database
