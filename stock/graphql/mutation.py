@@ -94,11 +94,11 @@ class RemoveCategory(graphene.Mutation):
         return RemoveCategory(category=category)   
 
 
-def get_vendor(vendor_id):
-    return Vendor.objects.get(id=vendor_id)
+def get_vendor(vendor):
+    return Vendor.objects.get(name=vendor)
 
-def get_category(category_id):
-    return Category.objects.get(id=category_id)    
+def get_category(category):
+    return Category.objects.get(name=category)    
 
 # VEHICLE MUTATION
 
@@ -108,8 +108,8 @@ class AddVehicle(graphene.Mutation):
         name = graphene.String(required=True)
         price = graphene.Decimal(required=True)
         launch_date = graphene.Date(required=True)
-        vendor = graphene.ID(required=True)
-        category = graphene.ID(required=True)
+        vendor = graphene.String(required=True)
+        category = graphene.String(required=True)
 
     vehicle = graphene.Field(VehicleType) 
 
@@ -133,8 +133,8 @@ class EditVehicle(graphene.Mutation):
         name = graphene.String()
         price = graphene.Decimal()
         launch_date = graphene.Date()
-        vendor = graphene.ID()
-        category = graphene.ID()
+        vendor = graphene.String()
+        category = graphene.String()
 
     vehicle = graphene.Field(VehicleType)
 

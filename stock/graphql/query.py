@@ -10,7 +10,7 @@ class BaseQuery(graphene.ObjectType):
     vendor_by_name = graphene.Field(VendorType, name=graphene.String(required=True))
     vehicle_by_category = graphene.List(VehicleType, category=graphene.String(required=True))        
     vehicle_by = graphene.List(VehicleType, 
-                    name=graphene.String(required=True), 
+                    vendor=graphene.String(required=True), 
                     category=graphene.String(required=True)
                 )
 
@@ -28,12 +28,12 @@ class BaseQuery(graphene.ObjectType):
 
     def resolve_vehicle_by_category(root, info, category):
         try:
-            return Vehicle.objects.filter(category__vehicle_type=category)
+            return Vehicle.objects.filter(category__name=category)
         except Vehicle.DoesNotExist:
             return None        
 
-    def resolve_vehicle_by(root, info, name, category):
+    def resolve_vehicle_by(root, info, vendor, category):
         try:
-            return Vehicle.objects.filter(Q(category__vehicle_type=category) & Q(vendor__name=name))
+            return Vehicle.objects.filter(Q(category__name=category) & Q(vendor__name=vendor))
         except Vehicle.DoesNotExist:
             return None      
