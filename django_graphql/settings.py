@@ -74,7 +74,7 @@ TEMPLATES = [
 ]
 
 GRAPHENE = {
-    "SCHEMA": "stock.graphql.schema.schema"
+    "SCHEMA": "stock.graphql.schema.schema"    
 }
 
 CHANNEL_LAYERS = {

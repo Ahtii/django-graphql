@@ -46,7 +46,7 @@ function get_cookie(name){
 $(document).ready(function(){
     // after page refresh
     const csrftoken = get_cookie('csrftoken')
-    fetch('http://localhost:8000/query', {
+    fetch('http://localhost:8000/custom_graphql', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ $(document).ready(function(){
         create_html_for_table_rows(data)    
     })
     // after new data is avialible  
-    fetch('http://localhost:8000/subscription', {
+    fetch('http://localhost:8000/custom_graphql', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -85,7 +85,7 @@ $(document).ready(function(){
         body: JSON.stringify({
             query: "\
                 subscription {\
-                    vehicleUpdated {\
+                    vendorUpdated {\
                         id\
                         name\
                     }\

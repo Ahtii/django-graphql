@@ -16,6 +16,8 @@ class BaseSubscriptions(graphene.ObjectType):
     vehicle_deleted = graphene.Field(VehicleType)
     
     def resolve_vendor_updated(root, info):  
+        # print("root in updated")
+        # print(info.context)
         return root.filter(
             lambda event:
                 (event.operation == CREATED or event.operation == UPDATED) and
@@ -23,6 +25,8 @@ class BaseSubscriptions(graphene.ObjectType):
         ).map(lambda event: event.instance) 
 
     def resolve_vendor_deleted(root, info):  
+        print("root in deleted")
+        print(info.context)
         return root.filter(
             lambda event:
                 event.operation == DELETED and
