@@ -7,5 +7,7 @@ from stock.graphql.schema import schema
 urlpatterns = [    
     path('', views.index, name='index'),  
     path('graphql', GraphQLView.as_view(graphiql=True)),
-    path('query', views.query_graphql, name='query')
+    path('query', views.query_graphql, name='query'),
+    path('subscription', views.subscription_graphql, name='subscription')
+    #path('subscription', views.Subscribe.as_view(), name='subscription')
 ]

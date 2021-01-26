@@ -3,6 +3,8 @@ from graphene_subscriptions.signals import post_save_subscription, post_delete_s
 
 from stock.models import *
 
+print("in signals")
+
 post_save.connect(post_save_subscription, sender=Vendor, dispatch_uid="vendor_post_save")
 post_delete.connect(post_delete_subscription, sender=Vendor, dispatch_uid="vendor_post_delete") 
 
