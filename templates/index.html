@@ -18,9 +18,91 @@
             <div class="col-6">
                 <h3><strong>Vehicles</strong></h3>                        
             </div>            
-            <!-- <div class="col text-right">
-                <h5>Sort</h5>                        
-            </div> -->
+            <div class="col">                
+                <div class="dropdown menu">
+                    <button class="btn btn dropdown-toggle more-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      More
+                    </button>
+                    <div class="dropdown-menu more-menu" aria-labelledby="dropdownMenuButton">
+                      <a id="add-vendor" class="dropdown-item">Add Vendor</a>
+                      <a id="add-category" class="dropdown-item">Add Category</a>
+                      <a id="add-vehicle" class="dropdown-item">Add Vehicle</a>
+                    </div>
+                </div> 
+                
+                <!-- Vendor Modal -->
+                <div class="modal fade" id="vendor-modal" tabindex="-1" role="dialog" aria-labelledby="vendor-modal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add Vendor</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="vendor-form"> {% csrf_token %}
+                                <div class="modal-body">                                
+                                    <input id="vendor-input" type="text" class="form-control" placeholder="Enter Vendor Name">                                
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-dark">Add</button>
+                                </div>
+                            </form>   
+                        </div>
+                    </div>
+                </div>   
+                
+                <!-- Category Modal -->
+                <div class="modal fade" id="category-modal" tabindex="-1" role="dialog" aria-labelledby="category-modal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Category</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="category-form"> {% csrf_token %}
+                                <div class="modal-body">                                
+                                    <input id="category-input" type="text" class="form-control" placeholder="Enter Category Name">                                
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-dark">Add</button>
+                                </div>
+                            </form>   
+                        </div>
+                    </div>
+                </div>  
+                
+                <!-- Vehicle Modal -->
+                <div class="modal fade" id="vehicle-modal" tabindex="-1" role="dialog" aria-labelledby="vehicle-modal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add Vendor</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="vehicle-form"> {% csrf_token %}
+                                <div class="modal-body">                                
+                                    <input id="vehicle-name-input" type="text" class="form-control" placeholder="Enter Name"><br>
+                                    <input id="vehicle-price-input" type="text" class="form-control" placeholder="Enter Price"><br>
+                                    <input id="vehicle-date-input" type="text" class="form-control" placeholder="Enter Launch Date"><br>  
+                                    <input id="vehicle-vendor-input" type="text" class="form-control" placeholder="Enter Vendor Name"><br>                              
+                                    <input id="vehicle-category-input" type="text" class="form-control" placeholder="Enter Category Name">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-dark">Add</button>
+                                </div>
+                            </form>   
+                        </div>
+                    </div>
+                </div>   
+            </div>
         </div>
         <div class="row">            
             <table class="table table-dark">
@@ -43,6 +125,10 @@
     <!-- jQuery library -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script src="/static/js/jQuery/jquery.min.js"></script>
+    <!-- Poper Js -->
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
+    <!-- Bootstrap Js -->
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     <!-- Custom JS -->
     <script src="/static/js/index.js"></script>
 </body>

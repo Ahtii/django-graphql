@@ -14,22 +14,61 @@ def index(request):
 def clean_query(query):
     return query.replace("\n","")    
 
-def get_graphql_result_from(request):    
+def get_graphql_result_from(request):
+    # result = {}
+    # if request.method == 'POST':
     body_data = json.loads(request.body.decode("utf-8"))
-    query = clean_query(body_data['query'])                
-    result = schema.execute(query, context_value=request)                      
-    result = result.data  
+    query = clean_query(body_data['query'])   
+    variables = body_data.get('variables')
+    print("variables: ")
+    print(variables)
+    print("query: ")
+    print(query)   
+    result = schema.execute(query, variables=variables, context_value=request, allow_subscriptions=True)
+    print(result)  
+    result = result.data            
     return result
+
+# def query_graphql(request):
+#     result = get_graphql_result_from(request)        
+#     return JsonResponse(result, safe=False) 
 
 class CustomGraphQLView(GraphQLCustomCoreBackend, View):
 
-    def __init__(self, executor=None):        
+    def __init__(self, executor=None):
+        # type: (Optional[Any]) -> None
         super(GraphQLCustomCoreBackend, self).__init__(executor)
         self.execute_params['allow_subscriptions'] = True        
+# class CustomGraphQLView(GraphQLView, View):    
 
+#     def __init__(self, executor=None):
+#         # type: (Optional[Any]) -> None        
+#         super(GraphQLView, self).__init__()
+#         self.graphiql = False        
+    
     def post(self, request):
-        result = get_graphql_result_from(request)        
+        result = get_graphql_result_from(request)
+        # result = None
+        # data = self.parse_body(request)
+        # print(data)
         return JsonResponse(result, safe=False)  
+
+# class Subscribe(GraphQLView):
+    
+    # def __init__(self):
+    #     super(graphiql=False, **kwargs).__init__()
+    # def __init__(self):
+    #     super().__init__()
+        
+    # def post(self, request, *args, **kwargs):
+    #     print(request.body)
+    #     super().parse_body(self, request)
+    #     result = super().execute_graphql_request(
+    #         self, request=request, query=query
+    #     )
+    #     print(result)
+        #result = {}get_graphql_result_from("subscription", request)
+        # return JsonResponse(result)  
 
 
 

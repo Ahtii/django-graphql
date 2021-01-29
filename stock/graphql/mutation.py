@@ -22,6 +22,26 @@ class AddVendor(graphene.Mutation):
         vendor.save()
         return AddVendor(vendor=vendor) 
 
+# class VendorInput(graphene.InputObjectType):
+#     name = graphene.String(required=True)
+
+# class AddVendor(graphene.Mutation):
+
+#     class Arguments:
+#         #name = graphene.String(required=True) 
+#         vendor_data = VendorInput(required=True)
+
+#     vendor = graphene.Field(Vendor) 
+
+#     #@classmethod
+#     def mutate(cls, root, info, vendor_data=None):
+#         # vendor = Vendor(name=name)
+#         # vendor.save()
+#         vendor = Vendor(
+#             name = vendor_data.name
+#         )
+#         return AddVendor(vendor=vendor) 
+
 class EditVendor(graphene.Mutation):
 
     class Arguments:

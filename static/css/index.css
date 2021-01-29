@@ -1,8 +1,39 @@
 .main-table {
     margin-top: 5%;
     box-shadow: 0px 0px 5px gray;
-    border-radius: 10px;
+    border-radius: 10px;    
+}
+.modal input {
+    font-size: 12px;
+}
+.table-row {
+    font-size: 12px;
 }
 .table-heading {
-    padding: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.menu {
+    float: right;
+}
+.more-btn {
+    background-color: rgb(30, 40, 50);    
+    color: white;
+    font-size: 12px;
+    box-shadow: 0px 0px 5px gray;
+}
+.more-btn:hover {
+    color: white;
+}
+.more-menu .dropdown-item {
+    font-size: 12px;
+}
+.more-menu .dropdown-item:hover {
+    background-color: rgb(30, 40, 50);
+    color: white;
+    cursor: pointer;
+}
+.btn-dark {
+    background-color: rgb(30, 40, 50);
 }
