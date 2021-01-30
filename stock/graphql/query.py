@@ -14,6 +14,17 @@ class BaseQuery(graphene.ObjectType):
                     category=graphene.String(required=True)
                 )
 
+    # Pagination example
+    vehicle_by_pagination = graphene.List(VehicleType,
+                        first=graphene.Int(),
+                        last=graphene.Int(),
+                        offset=graphene.Int()                                              
+                    )                                   
+
+    # has_next = graphene.Boolean(VehicleType)
+    # has_prev = graphene.Boolean(VehicleType)
+    # num_of_pages = graphene.Int(VehicleType)                                          
+
     def resolve_vehicles(root, info):
         return Vehicle.objects.select_related("vendor").all()
 
@@ -36,4 +47,24 @@ class BaseQuery(graphene.ObjectType):
         try:
             return Vehicle.objects.filter(Q(category__name=category) & Q(vendor__name=vendor))
         except Vehicle.DoesNotExist:
-            return None      
+            return None  
+
+    # Pagination example
+    def resolve_vehicle_by_pagination(root, info, first=None, last=None, offset=None):
+
+        if first and offset:                
+            return Vehicle.objects.all()[first:first+offset]
+        
+        if first:                
+            return Vehicle.objects.all()[:first]
+
+        vehicles = Vehicle.objects.all()
+
+        if last:            
+            return vehicles[len(vehicles)-last:]          
+
+        return vehicles    
+
+    # def resolve_has_next(root, info):
+
+    #     return Vehicle.objects.all()[first:first+offset]         

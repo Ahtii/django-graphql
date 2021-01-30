@@ -1,5 +1,8 @@
+.content {
+    margin-top: 10%;
+}
+
 .main-table {
-    margin-top: 5%;
     box-shadow: 0px 0px 5px gray;
     border-radius: 10px;    
 }
@@ -10,7 +13,7 @@
     font-size: 12px;
 }
 .table-heading {
-    padding-top: 5px;
+    padding-top: 10px;
     padding-right: 5px;
     padding-left: 5px;
 }
@@ -36,4 +39,59 @@
 }
 .btn-dark {
     background-color: rgb(30, 40, 50);
+}
+
+/* .paginator {
+    float: right!important;    
+    margin-right: 10px;
+}
+
+.pagination-nav {
+    font-size: 12px;    
+    padding-top: 15px;    
+}
+
+.pagination {
+    box-shadow: 0px 0px 5px silver;
+    border: 1px solid rgb(30, 40, 50);    
+} */
+
+.hide {
+    display: none;
+}
+
+/* .from label {
+    margin-top: 5px;
+    margin-left: -5px;
+}
+
+.from input {
+    position: absolute;
+    top: 0;
+    left: 60%;
+} */
+
+/* .pagination-content {
+    position: relative;
+} */
+
+/* #page-filter {
+    position: absolute;
+    width: 100px;       
+    left: 20%;
+    margin-left: 5px;
+} */
+
+.pagination {    
+    box-shadow: 0px 0px 5px silver;
+    border: 1px solid rgb(30, 40, 50);    
+}
+
+.pagination-menu .dropdown-item, .pagination-btn {
+    font-size: 12px;
+}
+.pagination input {
+    margin-left: 1px;
+    max-width: 100px;
+    border-left: 2px solid rgb(230, 230, 230);    
 }

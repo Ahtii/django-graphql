@@ -3,26 +3,27 @@
 
 // POPULATE TABLE WITH VEHICLE DATA
 
-var sno = 1;
+var sno;
 
 function create_html_for_table_rows(data){        
 
-    var vehicles = data['vehicles'];
-
-    for (const vehicle in vehicles) {        
-        var row_html = "<tr class='table-row'>\
-                            <th scope='row'>"+sno+"</th>\
-                            <td>"+vehicles[vehicle]['id']+"</td>\
-                            <td>"+vehicles[vehicle]['name']+"</td>\
-                            <td>"+vehicles[vehicle]['price']+" lakh</td>\
-                            <td>"+vehicles[vehicle]['launchDate']+"</td>\
-                            <td>"+vehicles[vehicle]['vendor']['name']+"</td>\
-                            <td>"+vehicles[vehicle]['category']['name']+"</td>\
-                        </tr>";  
-                    
-        sno += 1;
-        $(".table-body").append(row_html);
-    }
+    //var vehicles = data['vehicles'];
+    for (const vehicles in data) {
+        for (const vehicle in data[vehicles]) {        
+            var row_html = "<tr class='table-row'>\
+                                <th scope='row'>"+sno+"</th>\
+                                <td>"+data[vehicles][vehicle]['id']+"</td>\
+                                <td>"+data[vehicles][vehicle]['name']+"</td>\
+                                <td>"+data[vehicles][vehicle]['price']+" lakh</td>\
+                                <td>"+data[vehicles][vehicle]['launchDate']+"</td>\
+                                <td>"+data[vehicles][vehicle]['vendor']['name']+"</td>\
+                                <td>"+data[vehicles][vehicle]['category']['name']+"</td>\
+                            </tr>";  
+                        
+            sno += 1;
+            $(".table-body").append(row_html);
+        }                
+    }    
 }
 
 // get csrftoken from cookie
@@ -42,12 +43,36 @@ function get_cookie(name){
     return cookie_value;
 }
 
+// show hide offset setting 
 
-// GET ALL VEHICLES
+function show_hide_offset_setting(txt){
+    if (txt == "Offset"){
+        $(".from").removeClass("hide");
+    } else {
+        if (!$(".from").hasClass("hide"))
+            $(".from").addClass("hide");
+    }
+}
 
-$(document).ready(function(){    
-    // after page refresh
-    const csrftoken = get_cookie('csrftoken')
+// generate specific pagination query
+
+function get_pagination_filter(txt){
+    var filter_val = $("#filter").val();
+    var filter = "first: "+filter_val;
+    if (txt == "Last")
+        filter = "last: "+filter_val;
+    else if (txt == "Offset")
+        filter = "first: "+$("#offset").val()+ ", offset: "+filter_val; 
+    return filter;
+}
+
+const csrftoken = get_cookie('csrftoken');
+
+// fetch new data from server
+
+function fetch_new_data(pagination_filter) {
+    $(".table-body").empty();
+    sno = 1;
     fetch('http://localhost:8000/custom_graphql', {
         method: 'POST',
         headers: {
@@ -55,52 +80,114 @@ $(document).ready(function(){
             "X-CSRFToken": csrftoken
         },
         body: JSON.stringify({            
-            query: "\
-                query {\
-                    vehicles{\
-                        id\
-                        name\
-                        price\
-                        launchDate\
-                        vendor {\
-                            name\
-                        }\
-                        category {\
-                            name\
-                        }\
-                    }\
-                }\
-            "
+            query: `
+                        {
+                            vehicleByPagination(`+pagination_filter+`){
+                                id
+                                name
+                                price
+                                launchDate
+                                vendor {
+                                name
+                                }
+                                category {
+                                name
+                                }
+                            }
+                        }
+                    `
         })  
     })
     .then(res => res.json())
     .then(data => {    
         console.log(data);
         create_html_for_table_rows(data)    
-    })
-    // after new data is avialible  
-    fetch('http://localhost:8000/custom_graphql', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken
-        },
-        body: JSON.stringify({
-            query: "\
-                subscription {\
-                    vendorUpdated {\
-                        id\
-                        name\
-                    }\
-                }\
-            "
-        })  
-    })
-    .then(res => res.json())
-    .then(data => {    
-        //create_html_for_table_rows(data)    
-        console.log(data);
-    })  
+    });
+}
+
+
+// GET ALL VEHICLES
+
+$(document).ready(function(){  
+        
+    
+    // first item selected
+
+    $(".pagination-btn").text("First");
+
+    // select particular pagination
+
+    var pagination_filter = "first: "+$("#filter").val();
+
+    $(".pagination-menu .dropdown-item").on("click", function(){
+        var txt = $(this).text();
+        show_hide_offset_setting(txt);
+        pagination_filter = get_pagination_filter(txt);
+        $(".pagination-btn").text(txt);
+        fetch_new_data(pagination_filter);
+    });    
+    
+    fetch_new_data(pagination_filter);
+
+    $("#filter, #offset").on("change", function(){
+        var txt = $(".pagination-btn").text();
+        pagination_filter = get_pagination_filter(txt);        
+        fetch_new_data(pagination_filter);        
+    });    
+
+    // fetch('http://localhost:8000/custom_graphql', {
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         "X-CSRFToken": csrftoken
+    //     },
+    //     body: JSON.stringify({            
+    //         query: "\
+    //             query {\
+    //                 vehicles{\
+    //                     id\
+    //                     name\
+    //                     price\
+    //                     launchDate\
+    //                     vendor {\
+    //                         name\
+    //                     }\
+    //                     category {\
+    //                         name\
+    //                     }\
+    //                 }\
+    //             }\
+    //         "
+    //     })  
+    // })
+    // .then(res => res.json())
+    // .then(data => {    
+    //     console.log(data);
+    //     create_html_for_table_rows(data)    
+    // })
+    // // after new data is avialible  
+    // fetch('http://localhost:8000/custom_graphql', {
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         "X-CSRFToken": csrftoken
+    //     },
+    //     body: JSON.stringify({
+    //         query: "\
+    //             subscription {\
+    //                 vendorUpdated {\
+    //                     id\
+    //                     name\
+    //                 }\
+    //             }\
+    //         "
+    //     })  
+    // })
+    // .then(res => res.json())
+    // .then(data => {    
+    //     //create_html_for_table_rows(data)    
+    //     console.log(data);
+    // })  
     
     // on click of more button
     $(".more-btn").on("click", function(){
