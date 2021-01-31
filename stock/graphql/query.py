@@ -1,7 +1,8 @@
 import graphene
 from stock.graphql.types import *
 from django.db.models import Q
-
+import math
+from django.core.paginator import Paginator
 
 class BaseQuery(graphene.ObjectType):
 
@@ -14,16 +15,12 @@ class BaseQuery(graphene.ObjectType):
                     category=graphene.String(required=True)
                 )
 
-    # Pagination example
-    vehicle_by_pagination = graphene.List(VehicleType,
-                        first=graphene.Int(),
-                        last=graphene.Int(),
-                        offset=graphene.Int()                                              
-                    )                                   
+    # Pagination example    
 
-    # has_next = graphene.Boolean(VehicleType)
-    # has_prev = graphene.Boolean(VehicleType)
-    # num_of_pages = graphene.Int(VehicleType)                                          
+    vehicle_by_pagination = graphene.List(VehiclePaginatorType,                        
+                        offset=graphene.Int(required=True),
+                        limit=graphene.Int(required=True)                                              
+                    )                                                                        
 
     def resolve_vehicles(root, info):
         return Vehicle.objects.select_related("vendor").all()
@@ -50,21 +47,8 @@ class BaseQuery(graphene.ObjectType):
             return None  
 
     # Pagination example
-    def resolve_vehicle_by_pagination(root, info, first=None, last=None, offset=None):
-
-        if first and offset:                
-            return Vehicle.objects.all()[first:first+offset]
-        
-        if first:                
-            return Vehicle.objects.all()[:first]
-
-        vehicles = Vehicle.objects.all()
-
-        if last:            
-            return vehicles[len(vehicles)-last:]          
-
-        return vehicles    
-
-    # def resolve_has_next(root, info):
-
-    #     return Vehicle.objects.all()[first:first+offset]         
+    def resolve_vehicle_by_pagination(root, info, offset, limit):
+        #count = Vehicle.objects.count()                        
+        #pages = math.ceil(count / limit)        
+        vehicles = Vehicle.objects.all()[offset:offset+limit]                                     
+        return vehicles        

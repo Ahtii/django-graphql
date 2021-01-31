@@ -43,26 +43,13 @@ function get_cookie(name){
     return cookie_value;
 }
 
-// show hide offset setting 
+// pagination filter
 
-function show_hide_offset_setting(txt){
-    if (txt == "Offset"){
-        $(".from").removeClass("hide");
-    } else {
-        if (!$(".from").hasClass("hide"))
-            $(".from").addClass("hide");
-    }
-}
-
-// generate specific pagination query
-
-function get_pagination_filter(txt){
-    var filter_val = $("#filter").val();
-    var filter = "first: "+filter_val;
-    if (txt == "Last")
-        filter = "last: "+filter_val;
-    else if (txt == "Offset")
-        filter = "first: "+$("#offset").val()+ ", offset: "+filter_val; 
+function get_pagination_filter(){
+    var offset_val = $("#offset").val();
+    var limit_val = $("#limit").val();
+    var filter = "offset: "+offset_val+", limit: "+limit_val;
+    console.log(filter);
     return filter;
 }
 
@@ -70,9 +57,10 @@ const csrftoken = get_cookie('csrftoken');
 
 // fetch new data from server
 
-function fetch_new_data(pagination_filter) {
+function fetch_new_data() {
     $(".table-body").empty();
     sno = 1;
+    var filter = get_pagination_filter();
     fetch('http://localhost:8000/custom_graphql', {
         method: 'POST',
         headers: {
@@ -82,7 +70,7 @@ function fetch_new_data(pagination_filter) {
         body: JSON.stringify({            
             query: `
                         {
-                            vehicleByPagination(`+pagination_filter+`){
+                            vehicleByPagination(`+filter+`){
                                 id
                                 name
                                 price
@@ -110,29 +98,10 @@ function fetch_new_data(pagination_filter) {
 
 $(document).ready(function(){  
         
-    
-    // first item selected
+    fetch_new_data();        
 
-    $(".pagination-btn").text("First");
-
-    // select particular pagination
-
-    var pagination_filter = "first: "+$("#filter").val();
-
-    $(".pagination-menu .dropdown-item").on("click", function(){
-        var txt = $(this).text();
-        show_hide_offset_setting(txt);
-        pagination_filter = get_pagination_filter(txt);
-        $(".pagination-btn").text(txt);
-        fetch_new_data(pagination_filter);
-    });    
-    
-    fetch_new_data(pagination_filter);
-
-    $("#filter, #offset").on("change", function(){
-        var txt = $(".pagination-btn").text();
-        pagination_filter = get_pagination_filter(txt);        
-        fetch_new_data(pagination_filter);        
+    $("#limit, #offset").on("change", function(){
+        fetch_new_data();        
     });    
 
     // fetch('http://localhost:8000/custom_graphql', {

@@ -95,3 +95,7 @@
     max-width: 100px;
     border-left: 2px solid rgb(230, 230, 230);    
 }
+
+#offset, #limit {
+    width: 100px;
+}
