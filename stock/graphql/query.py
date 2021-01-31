@@ -2,7 +2,17 @@ import graphene
 from stock.graphql.types import *
 from django.db.models import Q
 import math
-from django.core.paginator import Paginator
+#from django.core.paginator import Paginator
+
+# For Relay Pagination
+from graphene_django.filter import DjangoFilterConnectionField
+
+class OffsetPagination(graphene.ObjectType):
+
+    vehicles = graphene.List(VehicleType)    
+    total_pages = graphene.Int()    
+    has_next = graphene.Boolean()
+    has_prev = graphene.Boolean()
 
 class BaseQuery(graphene.ObjectType):
 
@@ -15,12 +25,21 @@ class BaseQuery(graphene.ObjectType):
                     category=graphene.String(required=True)
                 )
 
-    # Pagination example    
+    # Pagination example (Offset pagination)
 
-    vehicle_by_pagination = graphene.List(VehiclePaginatorType,                        
+    vehicle_by_offset_paginator = graphene.Field(OffsetPagination,
                         offset=graphene.Int(required=True),
-                        limit=graphene.Int(required=True)                                              
-                    )                                                                        
+                        limit=graphene.Int(required=True)
+                    )                                                 
+
+    # Relay pagination example (Cursor pagination)
+
+    vehicle = relay.Node.Field(VehicleNode)
+    all_vehicles = DjangoFilterConnectionField(VehicleNode)    
+
+    vendor = relay.Node.Field(VendorNode)
+    all_vendors = DjangoFilterConnectionField(VendorNode)    
+
 
     def resolve_vehicles(root, info):
         return Vehicle.objects.select_related("vendor").all()
@@ -47,8 +66,20 @@ class BaseQuery(graphene.ObjectType):
             return None  
 
     # Pagination example
-    def resolve_vehicle_by_pagination(root, info, offset, limit):
-        #count = Vehicle.objects.count()                        
-        #pages = math.ceil(count / limit)        
+    def resolve_vehicle_by_offset_paginator(root, info, offset, limit):
+        
+        count = Vehicle.objects.count()                        
         vehicles = Vehicle.objects.all()[offset:offset+limit]                                     
-        return vehicles        
+        
+        total = math.ceil(count / limit)
+
+        has_next = False if offset >= (count - limit) else True            
+        has_prev = False if offset == 0 else True
+        
+        return OffsetPagination(
+            vehicles = vehicles,
+            total_pages = total,            
+            has_next = has_next,
+            has_prev = has_prev
+        )        
+            

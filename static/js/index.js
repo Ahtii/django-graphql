@@ -8,22 +8,23 @@ var sno;
 function create_html_for_table_rows(data){        
 
     //var vehicles = data['vehicles'];
-    for (const vehicles in data) {
-        for (const vehicle in data[vehicles]) {        
+   // for (const vehicles in data) {
+        console.log(data);
+        for (const vehicle in data) {        
             var row_html = "<tr class='table-row'>\
                                 <th scope='row'>"+sno+"</th>\
-                                <td>"+data[vehicles][vehicle]['id']+"</td>\
-                                <td>"+data[vehicles][vehicle]['name']+"</td>\
-                                <td>"+data[vehicles][vehicle]['price']+" lakh</td>\
-                                <td>"+data[vehicles][vehicle]['launchDate']+"</td>\
-                                <td>"+data[vehicles][vehicle]['vendor']['name']+"</td>\
-                                <td>"+data[vehicles][vehicle]['category']['name']+"</td>\
+                                <td>"+data[vehicle]['id']+"</td>\
+                                <td>"+data[vehicle]['name']+"</td>\
+                                <td>"+data[vehicle]['price']+" lakh</td>\
+                                <td>"+data[vehicle]['launchDate']+"</td>\
+                                <td>"+data[vehicle]['vendor']['name']+"</td>\
+                                <td>"+data[vehicle]['category']['name']+"</td>\
                             </tr>";  
                         
             sno += 1;
             $(".table-body").append(row_html);
-        }                
-    }    
+        }                        
+    //}    
 }
 
 // get csrftoken from cookie
@@ -43,22 +44,26 @@ function get_cookie(name){
     return cookie_value;
 }
 
+var offset = 0, limit = $("#limit").val();
+var has_next_page, has_prev_page, num_of_pages;
+
 // pagination filter
 
 function get_pagination_filter(){
     var offset_val = $("#offset").val();
-    var limit_val = $("#limit").val();
-    var filter = "offset: "+offset_val+", limit: "+limit_val;
+    limit = $("#limit").val();
+    var filter = "offset: "+offset+", limit: "+limit;
     console.log(filter);
     return filter;
 }
+
 
 const csrftoken = get_cookie('csrftoken');
 
 // fetch new data from server
 
-function fetch_new_data() {
-    $(".table-body").empty();
+function fetch_new_data() {  
+    $(".table-body").empty();  
     sno = 1;
     var filter = get_pagination_filter();
     fetch('http://localhost:8000/custom_graphql', {
@@ -70,26 +75,33 @@ function fetch_new_data() {
         body: JSON.stringify({            
             query: `
                         {
-                            vehicleByPagination(`+filter+`){
-                                id
-                                name
-                                price
-                                launchDate
-                                vendor {
-                                name
+                            vehicleByOffsetPaginator(`+filter+`){
+                                vehicles {
+                                    id
+                                    name
+                                    price
+                                    launchDate
+                                    vendor {
+                                        name
+                                    }
+                                    category {
+                                        name
+                                    }
                                 }
-                                category {
-                                name
-                                }
+                                hasNext
+                                hasPrev
+                                totalPages
                             }
                         }
                     `
         })  
     })
     .then(res => res.json())
-    .then(data => {    
-        console.log(data);
-        create_html_for_table_rows(data)    
+    .then(data => {                     
+        create_html_for_table_rows(data['vehicleByOffsetPaginator']["vehicles"])
+        has_next_page = data['vehicleByOffsetPaginator']["hasNext"];
+        has_prev_page = data['vehicleByOffsetPaginator']["hasPrev"];
+        num_of_pages = data['vehicleByOffsetPaginator']["totalPages"];
     });
 }
 
@@ -99,6 +111,23 @@ function fetch_new_data() {
 $(document).ready(function(){  
         
     fetch_new_data();        
+
+    $("#next").on("click", function(){
+        if (has_next_page){
+            if (offset == 0)
+                offset = limit;
+            else
+                offset = parseInt(offset) + parseInt(limit);                       
+            fetch_new_data();
+        }    
+    });    
+
+    $("#prev").on("click", function(){
+        if (has_prev_page){
+            offset = offset - $("#limit").val();                        
+            fetch_new_data();
+        }           
+    });
 
     $("#limit, #offset").on("change", function(){
         fetch_new_data();        

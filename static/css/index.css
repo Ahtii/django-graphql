@@ -1,5 +1,5 @@
 .content {
-    margin-top: 10%;
+    margin-top: 2%;
 }
 
 .main-table {
@@ -84,7 +84,9 @@
 
 .pagination {    
     box-shadow: 0px 0px 5px silver;
-    border: 1px solid rgb(30, 40, 50);    
+    border: 1px solid rgb(30, 40, 50); 
+    float: right;   
+    font-size: 10px;
 }
 
 .pagination-menu .dropdown-item, .pagination-btn {
@@ -98,4 +100,8 @@
 
 #offset, #limit {
     width: 100px;
+}
+
+.offset-pagination input, label, .cursor-pagination input, label {
+    font-size: 10px;
 }
