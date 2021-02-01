@@ -15,47 +15,8 @@
 <body>
     <div class="content">
         <div class="container">
-            <h6> Offset Pagination </h6>
-            <div class="row offset-pagination">
-                <!-- Pagination -->                
-                <div class="col-4">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label>Limit</label> &nbsp;&nbsp;&nbsp;
-                            <input type="number" class="form-control" id="limit" value="4">
-                        </div>
-                    </div>
-                </div>
-                <div class="col paginator">
-                    <nav class="pagination-nav">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" id="prev">Previous</a></li>                                                
-                            <li class="page-item"><a class="page-link" id="next">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>                                 
-            </div>            
-            <h6> Cursor Pagination </h6>
-            <div class="row cursor-pagination">
-                <!-- Pagination -->                
-                <div class="col-4">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label>Limit</label> &nbsp;&nbsp;&nbsp;
-                            <input type="number" class="form-control" id="cursor-limit" value="4">
-                        </div>
-                    </div>
-                </div>
-                <div class="col paginator">
-                    <nav class="pagination-nav">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" id="cursor-prev">Previous</a></li>                    
-                            <li class="page-item"><a class="page-link" id="cursor-next">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>                                 
-            </div>                        
-        </div><br>
+            <h6> Offset Pagination </h6><br>                                         
+        </div>
         <div class="container main-table">        
             <div class="row table-heading">
                 <div class="col-6">
@@ -163,6 +124,46 @@
                     </tbody>
                 </table>            
             </div>        
+        </div><br>
+        <div class="container">
+            <div class="row offset-pagination">
+                <!-- Pagination -->                
+                <div class="col-4">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>Limit</label> &nbsp;&nbsp;&nbsp;
+                            <input type="number" class="form-control" id="limit" value="4">
+                        </div>
+                    </div>
+                </div>
+                <div class="col paginator">
+                    <nav class="pagination-nav">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" id="prev">Previous</a></li>                                                
+                            <li class="page-item"><a class="page-link" id="next">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>                                 
+            </div>    
+            <div class="row cursor-pagination hide">
+                <!-- Pagination -->                
+                <div class="col-4">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>Limit</label> &nbsp;&nbsp;&nbsp;
+                            <input type="number" class="form-control" id="cursor-limit" value="4">
+                        </div>
+                    </div>
+                </div>
+                <div class="col paginator">
+                    <nav class="pagination-nav">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" id="cursor-prev">Previous</a></li>                    
+                            <li class="page-item"><a class="page-link" id="cursor-next">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>                                 
+            </div>   
         </div>
     </div>        
     <!-- jQuery library -->
