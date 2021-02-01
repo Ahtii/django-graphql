@@ -106,6 +106,64 @@ function fetch_new_data() {
 }
 
 
+var cursor_offset = 0, cursor_limit = $("#cursor-limit").val();
+var cursor_has_next_page, cursor_has_prev_page, cursor_num_of_pages;
+
+// pagination filter
+
+function cursor_get_pagination_filter(){
+    cursor_limit = $("#cursor-limit").val();
+    var filter = "offset: "+cursor_offset+", limit: "+cursor_limit;
+    return filter;
+}
+
+// fetch new data from server
+
+function fetch_cursor_data() {  
+    $(".cursor-table-body").empty();  
+    sno = 1;
+    var filter = cursor_get_pagination_filter();
+    fetch('http://localhost:8000/custom_graphql', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({            
+            query: `
+                        {
+                            vehicleByCursorPaginator(`+filter+`){
+                                vehicles {
+                                    id
+                                    name
+                                    price
+                                    launchDate
+                                    vendor {
+                                        name
+                                    }
+                                    category {
+                                        name
+                                    }
+                                }
+                                hasNext
+                                hasPrev
+                                totalPages
+                            }
+                        }
+                    `
+        })  
+    })
+    .then(res => res.json())
+    .then(data => {                     
+        create_html_for_table_rows(data['vehicleByOffsetPaginator']["vehicles"])
+        has_next_page = data['vehicleByOffsetPaginator']["hasNext"];
+        has_prev_page = data['vehicleByOffsetPaginator']["hasPrev"];
+        num_of_pages = data['vehicleByOffsetPaginator']["totalPages"];
+    });
+}
+
+
+
 // GET ALL VEHICLES
 
 $(document).ready(function(){  

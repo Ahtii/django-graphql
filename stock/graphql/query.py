@@ -10,6 +10,7 @@ from graphene_django.filter import DjangoFilterConnectionField
 class OffsetPagination(graphene.ObjectType):
 
     vehicles = graphene.List(VehicleType)    
+
     total_pages = graphene.Int()    
     has_next = graphene.Boolean()
     has_prev = graphene.Boolean()
@@ -21,24 +22,32 @@ class BaseQuery(graphene.ObjectType):
     vendor_by_name = graphene.Field(VendorType, name=graphene.String(required=True))
     vehicle_by_category = graphene.List(VehicleType, category=graphene.String(required=True))        
     vehicle_by = graphene.List(VehicleType, 
-                    vendor=graphene.String(required=True), 
-                    category=graphene.String(required=True)
-                )
+                        vendor=graphene.String(required=True), 
+                        category=graphene.String(required=True)
+                    )
 
     # Pagination example (Offset pagination)
 
     vehicle_by_offset_paginator = graphene.Field(OffsetPagination,
                         offset=graphene.Int(required=True),
                         limit=graphene.Int(required=True)
-                    )                                                 
+                    )                             
 
-    # Relay pagination example (Cursor pagination)
+    # GraphQL Filter with Relay
 
     vehicle = relay.Node.Field(VehicleNode)
-    all_vehicles = DjangoFilterConnectionField(VehicleNode)    
+    all_vehicles = DjangoFilterConnectionField(VehicleNode)                                     
 
-    vendor = relay.Node.Field(VendorNode)
-    all_vendors = DjangoFilterConnectionField(VendorNode)    
+    # GraphQL Filter without Relay
+
+    vehicle_filter = graphene.List(VehicleType,
+                    contains_name=graphene.String(),
+                    vendor_by_name=graphene.String(),
+                    price_gt=graphene.Decimal(),
+                    price_lt=graphene.Decimal(),
+                    category_by_name=graphene.String(),
+                    order_by=graphene.String()
+                )
 
 
     def resolve_vehicles(root, info):
@@ -81,5 +90,44 @@ class BaseQuery(graphene.ObjectType):
             total_pages = total,            
             has_next = has_next,
             has_prev = has_prev
-        )        
-            
+        )   
+
+    def resolve_vehicle_filter(root, info, 
+                    contains_name=None,
+                    vendor_by_name=None,
+                    price_gt=None,
+                    price_lt=None,
+                    category_by_name=None,
+                    order_by=None            
+                ):
+
+        if contains_name:
+            return Vehicle.objects.filter(name__contains=contains_name)
+
+        elif vendor_by_name:
+            return Vehicle.objects.filter(vendor__name=vendor_by_name)
+
+        elif price_gt:
+            return Vehicle.objects.filter(price__gt=price_gt)
+
+        elif price_lt:
+            return Vehicle.objects.filter(price__lt=price_lt)
+        
+        elif category_by_name:
+            return Vehicle.objects.filter(category__name=category_by_name)  
+
+        elif category_by_name and price_lt:
+            return Vehicle.objects.filter(
+                    Q(category__name=category_by_name) &
+                    Q(price__lt=price_lt)
+                )   
+
+        elif order_by:
+            return Vehicle.objects.all().order_by(order_by)
+
+        elif vendor_by_name and order_by:
+            return Vehicle.objects.filter(
+                    vendor__name=vendor_by_name
+                ).order_by(order_by)
+
+        return Vehicle.objects.all()                    

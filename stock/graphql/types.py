@@ -28,7 +28,10 @@ class CategoryType(DjangoObjectType):
 class VehicleNode(DjangoObjectType):
     class Meta:
         model = Vehicle
-        filter_fields = ['vendor', 'category']
+        filter_fields = {
+            'price': ['gt', 'lt'],
+            'name': ['icontains', 'startswith']             
+        }
         interfaces = (relay.Node, )
 
 class VendorNode(DjangoObjectType):

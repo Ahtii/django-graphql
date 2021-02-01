@@ -15,9 +15,17 @@
 <body>
     <div class="content">
         <div class="container">
-            <h6> Offset Pagination </h6>
-            <div class="row offset-pagination">
-                <!-- Pagination -->                
+            <!-- Pagination Toggle -->
+            <div class="row">
+                <div class="col-6">
+                    Switch To: &nbsp; <button type="button" class="btn btn-dark enabler"><strong class="enabler-txt"> Cursor Pagination </strong></button>
+                </div>
+                <div class="col">
+                    <h5 class="current-pagination text-right"> Offset Pagination </h5>
+                </div>
+            </div><br>
+            <!-- Offset Pagination -->
+            <div class="row offset-pagination">                
                 <div class="col-4">
                     <div class="form-inline">
                         <div class="form-group">
@@ -34,10 +42,9 @@
                         </ul>
                     </nav>
                 </div>                                 
-            </div>            
-            <h6> Cursor Pagination </h6>
-            <div class="row cursor-pagination">
-                <!-- Pagination -->                
+            </div>                        
+            <!-- Cursor Pagination -->
+            <div class="row cursor-pagination hide">                
                 <div class="col-4">
                     <div class="form-inline">
                         <div class="form-group">
@@ -160,6 +167,8 @@
                     </tr>
                     </thead>
                     <tbody class="table-body">                  
+                    </tbody>
+                    <tbody class="cursor-table-body hide">                  
                     </tbody>
                 </table>            
             </div>        
