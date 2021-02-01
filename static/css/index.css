@@ -115,3 +115,9 @@
 .total-group {
     float: right;
 }
+.page-link {
+    cursor: pointer;
+}
+.page-active {
+    color: silver;
+}

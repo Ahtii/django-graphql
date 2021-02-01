@@ -47,6 +47,21 @@ function get_cookie(name){
 var offset = 0, limit = $("#limit").val();
 var has_next_page, has_prev_page, num_of_pages, total_pages, total_records;
 
+function populate_page_nums(){
+    var page;
+    var total_pages = $(".offset-pagination li").length - 2;       
+    if (total_pages != num_of_pages){
+        for (page = 1; page <= num_of_pages; page++){
+            var page_num_html = "<li class='page-item'>\
+                                    <a class='page-link page-num'>\
+                                        "+page+"\
+                                    </a>\
+                                </li>";
+            $("#next").parent().before(page_num_html);               
+        }
+    }
+}
+
 // pagination filter
 
 function get_pagination_filter(){
@@ -101,12 +116,13 @@ function fetch_new_data() {
     .then(data => {                     
         create_html_for_table_rows(data['vehicleByOffsetPaginator']["vehicles"])
         has_next_page = data['vehicleByOffsetPaginator']["hasNext"];
-        has_prev_page = data['vehicleByOffsetPaginator']["hasPrev"];
+        has_prev_page = data['vehicleByOffsetPaginator']["hasPrev"];        
+        //populate_page_nums();        
         num_of_pages = data['vehicleByOffsetPaginator']["totalPages"];
-        total_pages = data['vehicleByOffsetPaginator']["totalPages"];
         total_records = data['vehicleByOffsetPaginator']["totalRecords"];
-        $(".total-pages").text(total_pages);
+        $(".total-pages").text(num_of_pages);
         $(".total-records").text(total_records);
+        populate_page_nums();
     });
 }
 
@@ -114,11 +130,15 @@ function fetch_new_data() {
 // GET ALL VEHICLES
 
 $(document).ready(function(){  
-        
+    
+    var prev;
+
     fetch_new_data();        
 
     $("#next").on("click", function(){
         if (has_next_page){
+            // $(prev).parent().removeClass("active");
+            // $(this).parent().addClass("active");
             if (offset == 0)
                 offset = limit;
             else
@@ -136,7 +156,17 @@ $(document).ready(function(){
 
     $("#limit, #offset").on("change", function(){
         fetch_new_data();        
-    });      
+    });  
+    
+    
+    $(document).on("click", ".page-num", function(){
+        $(prev).parent().removeClass("active");
+        $(this).parent().addClass("active");
+        prev = this;
+        var current_page_num = $(this).text();
+        offset = current_page_num * parseInt(limit) - parseInt(limit);        
+        fetch_new_data();        
+    });
 
     // fetch('http://localhost:8000/custom_graphql', {
     //     method: 'POST',
