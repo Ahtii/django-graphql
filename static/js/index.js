@@ -44,12 +44,12 @@ function get_cookie(name){
     return cookie_value;
 }
 
-var offset = 0, limit = $("#limit").val();
+var offset = 0, limit = $("#limit").val(), prev;;
 var has_next_page, has_prev_page, num_of_pages, total_pages, total_records;
 
 function populate_page_nums(){
     var page;
-    var total_pages = $(".offset-pagination li").length - 2;       
+    var total_pages = $(".offset-pagination li").length - 2;     
     if (total_pages != num_of_pages){
         for (page = 1; page <= num_of_pages; page++){
             var page_num_html = "<li class='page-item'>\
@@ -129,9 +129,7 @@ function fetch_new_data() {
 
 // GET ALL VEHICLES
 
-$(document).ready(function(){  
-    
-    var prev;
+$(document).ready(function(){          
 
     fetch_new_data();        
 

@@ -22,7 +22,7 @@ class BaseQuery(graphene.ObjectType):
     vendor_by_name = graphene.Field(VendorType, name=graphene.String(required=True))
     vehicle_by_category = graphene.List(VehicleType, category=graphene.String(required=True))        
     vehicle_by = graphene.List(VehicleType, 
-                    vendor=graphene.String(required=True), 
+                    vendor=graphene.String(required=True),
                     category=graphene.String(required=True)
                 )
 
@@ -30,8 +30,8 @@ class BaseQuery(graphene.ObjectType):
 
     vehicle_by_offset_paginator = graphene.Field(OffsetPagination,
                         offset=graphene.Int(required=True),
-                        limit=graphene.Int(required=True)
-                    )                                                 
+                        limit=graphene.Int(required=True),
+                    )                 
 
     # Relay pagination example (Cursor pagination)
 
@@ -70,10 +70,10 @@ class BaseQuery(graphene.ObjectType):
     def resolve_vehicle_by_offset_paginator(root, info, offset, limit):
         
         vehicles = Vehicle.objects.all()
-        count = len(vehicles)                        
-        vehicles = vehicles[offset:offset+limit]                                     
+        count = len(vehicles)
+        vehicles = vehicles[offset:offset+limit]
         
-        total = math.ceil(count / limit)        
+        total = math.ceil(count / limit)
 
         has_next = False if offset >= (count - limit) else True            
         has_prev = False if offset == 0 else True
