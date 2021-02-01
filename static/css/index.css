@@ -109,3 +109,9 @@
 .enabler-txt {
     color: orange;
 }
+.limit-group input {
+    font-size: 10px;
+}
+.total-group {
+    float: right;
+}

@@ -10,7 +10,8 @@ from graphene_django.filter import DjangoFilterConnectionField
 class OffsetPagination(graphene.ObjectType):
 
     vehicles = graphene.List(VehicleType)    
-    total_pages = graphene.Int()    
+    total_pages = graphene.Int() 
+    total_records = graphene.Int()   
     has_next = graphene.Boolean()
     has_prev = graphene.Boolean()
 
@@ -68,17 +69,19 @@ class BaseQuery(graphene.ObjectType):
     # Pagination example
     def resolve_vehicle_by_offset_paginator(root, info, offset, limit):
         
-        count = Vehicle.objects.count()                        
-        vehicles = Vehicle.objects.all()[offset:offset+limit]                                     
+        vehicles = Vehicle.objects.all()
+        count = len(vehicles)                        
+        vehicles = vehicles[offset:offset+limit]                                     
         
-        total = math.ceil(count / limit)
+        total = math.ceil(count / limit)        
 
         has_next = False if offset >= (count - limit) else True            
         has_prev = False if offset == 0 else True
         
         return OffsetPagination(
             vehicles = vehicles,
-            total_pages = total,            
+            total_pages = total,
+            total_records = count,            
             has_next = has_next,
             has_prev = has_prev
         )        

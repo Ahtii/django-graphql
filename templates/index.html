@@ -24,6 +24,29 @@
                     <h5 class="current-pagination text-right"> Offset Pagination </h5>
                 </div>
             </div><br>                                   
+        </div>
+        <div class="container">
+            <!-- Pagination Total -->
+            <div class="row">
+                <div class="col-6 limit-group">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>Limit</label> &nbsp;&nbsp;&nbsp;
+                            <input type="number" class="form-control" id="limit" value="4">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-inline total-group">
+                        <div class="form-group">
+                            <label>Total Pages</label> &nbsp;&nbsp;&nbsp;
+                            <span class="total-pages"></span> &nbsp;&nbsp;&nbsp;
+                            <label>Total Records</label> &nbsp;&nbsp;&nbsp;
+                            <span class="total-records"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>                                  
         </div><br>
         <div class="container main-table">        
             <div class="row table-heading">
@@ -138,13 +161,7 @@
         <div class="container">
             <!-- Offset Pagination -->
             <div class="row offset-pagination">                
-                <div class="col-4">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label>Limit</label> &nbsp;&nbsp;&nbsp;
-                            <input type="number" class="form-control" id="limit" value="4">
-                        </div>
-                    </div>
+                <div class="col-4">                    
                 </div>
                 <div class="col paginator">
                     <nav class="pagination-nav">
@@ -174,7 +191,7 @@
                     </nav>
                 </div>                                 
             </div>
-        </div>         
+        </div>          
     </div>        
     <!-- jQuery library -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->

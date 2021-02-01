@@ -5,6 +5,9 @@ import graphene
 # For relay pagination
 from graphene import relay
 
+# change pagination position
+# add filter to pagination
+
 # Module to Map each django model to graphql type
 
 class VendorType(DjangoObjectType):

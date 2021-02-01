@@ -45,7 +45,7 @@ function get_cookie(name){
 }
 
 var offset = 0, limit = $("#limit").val();
-var has_next_page, has_prev_page, num_of_pages;
+var has_next_page, has_prev_page, num_of_pages, total_pages, total_records;
 
 // pagination filter
 
@@ -91,6 +91,7 @@ function fetch_new_data() {
                                 hasNext
                                 hasPrev
                                 totalPages
+                                totalRecords
                             }
                         }
                     `
@@ -102,6 +103,10 @@ function fetch_new_data() {
         has_next_page = data['vehicleByOffsetPaginator']["hasNext"];
         has_prev_page = data['vehicleByOffsetPaginator']["hasPrev"];
         num_of_pages = data['vehicleByOffsetPaginator']["totalPages"];
+        total_pages = data['vehicleByOffsetPaginator']["totalPages"];
+        total_records = data['vehicleByOffsetPaginator']["totalRecords"];
+        $(".total-pages").text(total_pages);
+        $(".total-records").text(total_records);
     });
 }
 
@@ -131,7 +136,7 @@ $(document).ready(function(){
 
     $("#limit, #offset").on("change", function(){
         fetch_new_data();        
-    });    
+    });      
 
     // fetch('http://localhost:8000/custom_graphql', {
     //     method: 'POST',
