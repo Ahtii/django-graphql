@@ -15,8 +15,16 @@
 <body>
     <div class="content">
         <div class="container">
-            <h6> Offset Pagination </h6><br>                                         
-        </div>
+            <!-- Pagination Toggle -->
+            <div class="row">
+                <div class="col-6">
+                    Switch To: &nbsp; <button type="button" class="btn btn-dark enabler"><strong class="enabler-txt"> Cursor Pagination </strong></button>
+                </div>
+                <div class="col">
+                    <h5 class="current-pagination text-right"> Offset Pagination </h5>
+                </div>
+            </div><br>                                   
+        </div><br>
         <div class="container main-table">        
             <div class="row table-heading">
                 <div class="col-6">
@@ -122,12 +130,14 @@
                     </thead>
                     <tbody class="table-body">                  
                     </tbody>
+                    <tbody class="cursor-table-body hide">                  
+                    </tbody>
                 </table>            
             </div>        
         </div><br>
         <div class="container">
-            <div class="row offset-pagination">
-                <!-- Pagination -->                
+            <!-- Offset Pagination -->
+            <div class="row offset-pagination">                
                 <div class="col-4">
                     <div class="form-inline">
                         <div class="form-group">
@@ -144,9 +154,9 @@
                         </ul>
                     </nav>
                 </div>                                 
-            </div>    
-            <div class="row cursor-pagination hide">
-                <!-- Pagination -->                
+            </div>                        
+            <!-- Cursor Pagination -->
+            <div class="row cursor-pagination hide">                
                 <div class="col-4">
                     <div class="form-inline">
                         <div class="form-group">
@@ -163,8 +173,8 @@
                         </ul>
                     </nav>
                 </div>                                 
-            </div>   
-        </div>
+            </div>
+        </div>         
     </div>        
     <!-- jQuery library -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->

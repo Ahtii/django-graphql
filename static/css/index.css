@@ -105,3 +105,7 @@
 .offset-pagination input, label, .cursor-pagination input, label {
     font-size: 10px;
 }
+
+.enabler-txt {
+    color: orange;
+}
